@@ -50,7 +50,7 @@ export default {
     },
     methods:{
         register(){
-
+            this.$router.replace('/login/success')
         },
         goBack(){
             this.$router.replace('/')

@@ -47,9 +47,21 @@ const routes = [
     component: ()=> import('@/components/intro/intro')
   },
   {
-    path: '/complain',
+    path: '/complain/',
     name: 'complain',
-    component: ()=> import('@/components/complain/complain')
+    component: ()=> import('@/components/complain/complain'),
+    children:[
+      {
+        path: '/complain/',
+        name: 'tocomplain',
+        component: ()=> import('@/components/complain/tocomplain'),
+      },
+      {
+        path: '/complain/mycomplains',
+        name: 'mycomplains',
+        component: ()=> import('@/components/complain/mycomplains.vue'),
+      },
+    ]
   },
   {
     path: '/about',

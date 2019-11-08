@@ -44,6 +44,7 @@ export default {
         .success-icon{
             background-color: rgba(25,202,127,0.8);
             color:#fff;
+            padding:0;
             width: 64px;
             height: 64px;
             line-height: 64px;
@@ -54,10 +55,14 @@ export default {
             margin:0 auto;
         }
         .info-item{
-            width:160px;
+            width:180px;
             margin:0 auto;
             margin-top:58px;
             font-family:Microsoft YaHei;
+            font-size:16px;
+            a{
+                text-decoration: none;
+            }
         }
         .info-message{
             height:24px;
@@ -68,11 +73,6 @@ export default {
             line-height:40px;
             
         }
-        .info-jump{
-            font-size:16px;
-            a{
-                text-decoration: none;
-            }
-        }
+        
     }
 </style>
