@@ -1,14 +1,55 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'login',
+    component: ()=> import('@/components/login/entry'),
+    children:[
+      {
+        path: '/login/register',
+        name: 'register',
+        component: ()=> import('@/components/login/register')
+      },
+      {
+        path: '/',
+        name: 'register',
+        component: ()=> import('@/components/login/login')
+      },
+      {
+        path: '/login/resetpass',
+        name: 'register',
+        component: ()=> import('@/components/login/forgetpass')
+      },
+      {
+        path: '/login/modifypass',
+        name: 'register',
+        component: ()=> import('@/components/login/modifypass')
+      },
+      {
+        path: '/login/success',
+        name: 'registerSuccess',
+        component: ()=> import('@/components/login/success')
+      },
+
+    ]
+  },
+  
+  
+  
+  {
+    path: '/intro',
+    name: 'intro',
+    component: ()=> import('@/components/intro/intro')
+  },
+  {
+    path: '/complain',
+    name: 'complain',
+    component: ()=> import('@/components/complain/complain')
   },
   {
     path: '/about',
