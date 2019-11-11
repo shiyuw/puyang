@@ -1,6 +1,7 @@
 <template>
     <el-container>
         <el-main>
+            <!-- <div class="bg"></div> -->
             <div class="complain-wrapper">
                 <div class="usernav">
                     <div class="user-img"><img width='35' height='35' src="@/assets/images/logo.png" alt="user"></div>
@@ -38,21 +39,41 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+#app::-webkit-scrollbar {
+        display: none;
+}
 .el-main {
+    font-family:'Microsoft YaHei';
     background: url('../../assets/images/bg.png') no-repeat center center;
     background-size: cover;
-    height:1080px;
+    // overflow: hidden;
+    height:900px;
+    
     width:100%;
-    opacity: 0.9;
+    // opacity: 0.5;
+    // padding:1px;
+    // box-sizing:border-box;
+    z-index:1;
     position: relative;
-    font-family:Microsoft YaHei;
-    overflow: hidden;
+    &:before{
+        content: "";
+        width:150%;
+        height:150%;
+        position: absolute;
+        left:0;
+        top:0;
+        background: inherit;
+        filter: blur(4px);
+        z-index: 2;
+    }
     .complain-wrapper{
         position: absolute;
         width:1200px;
         top:43px;
         left:360px;
+        opacity: 1;
+        z-index: 11;
         .usernav{
             position: absolute;
             top:-22px;
@@ -97,11 +118,13 @@ export default {
         }
         .complain-body{
             width:1200px;
-            height:900px;
+            height:auto;
             background:rgba(255,255,255,1);
             border-radius:10px 10px 0px 0px;
             margin:0 auto;
             margin-top:57px;
+            padding-bottom:173px;
+            
         }
         
         

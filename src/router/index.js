@@ -61,6 +61,11 @@ const routes = [
         name: 'mycomplains',
         component: ()=> import('@/components/complain/mycomplains.vue'),
       },
+      {
+        path: '/complain/detail',
+        name: 'mycomplains',
+        component: ()=> import('@/components/complain/detail.vue'),
+      },
     ]
   },
   {

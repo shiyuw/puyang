@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="com-body-header">
-            <el-button style="background:rgba(63,162,255,1);">我要投诉</el-button>
+            <el-button style="background:rgba(63,162,255,1);" @click="tocomplain">我要投诉</el-button>
             <el-button style="background:rgba(255,77,5,1); margin-left:80px;">我的投诉</el-button>
 
         </div>
@@ -108,6 +108,9 @@ export default {
          indexMethod(index) {
             return (index +1);
         },
+        tocomplain(){
+            this.$router.replace('/complain/')
+        },
         goPage(current,num){
 
             if(arguments.length>1){
@@ -140,13 +143,16 @@ export default {
             height:50px;
             width:180px;
             color:#fff;
+            span{
+                color:#fff;
+            }
         }
     &::after{
         content:'';
         height:0;
         width: 0;
         top:134px;
-        right:458px;
+        left:720px;
         border-bottom:10px solid #ccc;
         border-top:10px solid transparent;
         border-left:10px solid transparent;
@@ -176,7 +182,9 @@ export default {
             span{
                 color:#4D4D4D;
             }
+            
         }
+
         .highlight-btn{
             // style="background-color:#FF4D05;border:none;color:#fff;"
             background-color: #FF4D05;

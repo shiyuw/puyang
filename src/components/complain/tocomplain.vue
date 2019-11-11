@@ -2,7 +2,7 @@
     <div>
         <div class="com-body-header">
             <el-button style="background:rgba(63,162,255,1);">我要投诉</el-button>
-            <el-button style="background:rgba(255,77,5,1); margin-left:80px;">我的投诉</el-button>
+            <el-button style="background:rgba(255,77,5,1); margin-left:80px;" @click="mycomplains">我的投诉</el-button>
         </div>
         <div class="com-content">
             <div class="form-item">
@@ -65,13 +65,16 @@ export default {
         },
         beforeAvatarUpload(){
 
+        },
+        mycomplains(){
+            this.$router.replace('/complain/mycomplains')
         }
     }
     
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .com-body-header{
         position: relative;
         width: 100%;
@@ -83,6 +86,9 @@ export default {
             height:50px;
             width:180px;
             color:#fff;
+            span{
+                color:#fff;
+            }
         }
     &::after{
         content:'';
