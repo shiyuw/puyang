@@ -9,18 +9,24 @@
                     <input type="text" placeholder="请输入单位名称" v-model="companyName" />
                 </div>
                 <div class="form-item form-item-input">
-                    <div class="tips" v-if="mobileFormatActive">手机号格式不正确</div>
+                    
                     <div class="label-name">手机号码</div>
-                    <input type="text" placeholder="请输入手机号" v-model="mobile" />
+                    <input type="text"  @focus="mobileActive = false"  placeholder="请输入手机号" v-model="mobile" />
+                    <div class="tips" v-if="mobileActive">
+                        手机号码格式不正确
+                    </div>
                 </div>
                 <div class="form-item form-item-input">
                     <div class="label-name">验证码</div>
                     <input type="text" class="mobilecode" placeholder="请输入验证码" v-model="mobileCode" />
-                    <el-button @click="getMobileCode" class="mobilecode-btn">获取验证码</el-button>
+                    <el-button @click="getMobileCode" :disabled="codeActive"  class="mobilecode-btn"  :class="codeActive?'codeActive':''">获取验证码<span v-if="seconds"><br>（{{seconds}}s）</span></el-button>
                 </div>
                <div class="form-item form-item-input">
                     <div class="label-name">密码</div>
-                    <input type="text" placeholder="8-16位数字和字母区分大小写" v-model="password" />
+                    <input type="password" @focus="pwdActive = false" placeholder="8-16位数字和字母区分大小写" v-model="password" />
+                    <div class="tips" v-if="pwdActive">
+                        密码格式不正确
+                    </div>
                 </div>
                 <div class="form-item" style="line-height:14px;">
                     <input type="checkbox" name="agree" v-model="contract">我已阅读并同意<a href='/'>用户使用协议</a>
@@ -35,6 +41,7 @@
     
 </template>
 <script>
+import {register,getSms} from "@/api/api"
 export default {
     data(){
         return{
@@ -43,19 +50,128 @@ export default {
             mobileCode:'',
             password:'',
             contract:false,
-            mobileFormatActive:false,
+            // mobileFormatActive:false,
             // disableActive:false
-
+            codeActive:false,
+            seconds:0,
+            pwdActive: false,
+            mobileActive:false
         }
     },
     methods:{
         register(){
-            this.$router.replace('/login/success')
+            let companyName = this.companyName;
+            let mobile = this.mobile;
+            let mobilecode = this.mobileCode;
+            let password = this.password;
+            let appInfoId = 10;
+            let result = this.testFormat('password',password);
+            if(!companyName||!mobile||!mobilecode){
+                return
+            }
+            if(!result){
+                this.pwdActive = true;
+                return 
+            }
+            result = this.testFormat('mobileNum',mobile);
+            if(!result){
+                this.mobileActive = true;
+                return 
+            }
+
+            let data = {
+                // 'name':companyName
+                'mobile':mobile,
+                'captcha':mobilecode,
+                'appInfoId':appInfoId,
+                'password':password
+            }
+            register(data).then(res=>{
+                if(res.success){
+                    // this.$message("注册成功")
+                    this.$message({
+                        type:'success',
+                        message:'注册成功',
+                        showClose:true
+                    })
+                    this.$router.replace('/login/success')
+                }else{
+                    let message = res.message;
+                    this.$message({
+                        type:'warning',
+                        message:message,
+                        showClose:true
+                    });
+                }
+                
+            }).catch(()=>{
+                this.$message("注册失败")
+            })
+        },
+        testFormat(type,str){
+            let pattern = /[0-9|a-z|A-Z]{6,12}/;
+            let patternMap = {
+                'password':/^[0-9|a-z|A-Z]{6,12}$/,
+                'mobileNum':/^1[0-9]{10}$/,
+            }
+            return patternMap[type].test(str);
         },
         goBack(){
             this.$router.replace('/')
+        },
+        getMobileCode(){
+            let mobilePhone = this.mobile;
+            let auto_id = 10;
+            let status = 1;
+            
+            let result = this.testFormat('mobileNum',mobilePhone);
+            if(result&&mobilePhone){
+                let data ={
+                    "mobilePhone":mobilePhone,
+                    "auto_id":auto_id,
+                    "status":status
+                }
+                getSms(data).then(res=>{
+                    if(res.success){
+                        this.seconds = 30;
+                        this.codeActive = true
+                        let timer = setInterval(()=>{
+                            if(this.seconds>0){
+
+                                this.seconds -=1;
+                            }else{
+                                if(timer){
+                                    clearInterval(timer)
+                                }
+                                this.seconds = 0;
+                                this.codeActive = false;
+                            }
+                        },1000)
+                        this.$message({
+                            type:'success',
+                            message:'已发送验证码',
+                            showClose:true
+                        })
+                    }else{
+                        let message = res.message
+                        this.$message({
+                            type:'warning',
+                            message:message,
+                            showClose:true
+                        })
+                    }
+                    
+                }).catch(()=>{
+                    this.$message("获取验证码失败")
+                })
+            }//if结束
+            if(!result){
+                this.mobileActive = true
+            }
+            
         }
     },
+    
 }
 </script>
 <style lang="less" scoped>
@@ -123,6 +239,10 @@ export default {
                 color:#fff;
                 border:none;
             }
+            .codeActive{
+                background-color: #666;
+                color:#fff;
+            }
             .btn,.btn-nobg{
                 width:100%;
                 border:none;
@@ -138,4 +258,5 @@ export default {
                 margin-top:10px;
             }
     }
+    
 </style>

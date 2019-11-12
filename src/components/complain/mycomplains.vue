@@ -119,9 +119,9 @@ export default {
                 this.curPageNum = Math.max(1,tempnum);
             }else{
                 
-                if(arguments.length==0){
-                    this.curPageNum = this.goPageNum;
-                }
+                
+                this.curPageNum = this.goPageNum;
+                
             }
 
             

@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import {updatePassword} from "@/api/api"
 export default {
     data(){
         return{
@@ -52,11 +53,32 @@ export default {
                 this.warnActive = true;
                 return
             }
-            this.$router.replace('/login/success')
+            let password = this.password;
+            let mobilecode = localStorage.getItem('mobileCode');
+            let mobile = localStorage.getItem('mobile');
+            let appInfoId = 10;
+            if(password&&mobilecode&&mobile){
+                let data = {
+                    "mobilePhone":mobile,
+                    "captcha":mobilecode,
+                    "password":password,
+                    "appInfoId":appInfoId
+
+                }
+                updatePassword(data).then(res=>{
+                    this.$message("修改密码成功")
+                    this.$router.replace('/login/success')
+                }).catch(()=>{
+                    this.$message("修改密码失败")
+                })
+            }
+            
             
         },
         testFormat(str){
-            let pattern = /[0-9|a-z|A-Z]{6,12}/;
+            // 'password':/^[0-9|a-z|A-Z]{6,12}$/,
+            //    'mobileNum':/^1[0-9]{10}$/,
+            let pattern = /^[0-9|a-z|A-Z]{6,12}$/;
             return pattern.test(str);
         },
         goBack(){

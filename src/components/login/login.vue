@@ -15,7 +15,7 @@
                     <div class="tips"><el-link type="info" href="/login/resetpass">忘记密码？</el-link></div>
                 </div>
                 <div class="form-item  clearfix">
-                    <el-button class='btn'>登录</el-button>
+                    <el-button class='btn' @click="login">登录</el-button>
                 </div>
                 <div class="form-item">
                     <el-button class="btn-nobg" @click="goRegister">注册</el-button>
@@ -24,6 +24,7 @@
     
 </template>
 <script>
+import {login} from '@/api/api'
 export default {
     data(){
         return{
@@ -38,6 +39,35 @@ export default {
     methods:{
         login(){
             // api to login
+            let username = this.username;
+            let password = this.password;
+            let appInfoId = 10;
+            let data = {
+                'mobile':username,
+                'password':password,
+                'appInfoId':appInfoId
+            }
+            login(data).then(res=>{
+                // this.$message("登录成功")
+                if(res.sucess){
+                    this.$message({
+                        type:'success',
+                        showClose:true,
+                        message:"登录成功"
+                    });
+                    this.$router.replace('/complain')
+                }else{
+                    let message = res.message;
+                    this.$message({
+                        type:'warning',
+                        showClose:true,
+                        message:message
+                    });
+                }
+                
+            }).catch(()=>{
+                this.$message("登录失败")
+            })
         },
         goRegister(){
             this.$router.replace('/login/register')

@@ -9,12 +9,15 @@
                 </div>
                 <div class="form-item form-item-input">
                     <div class="label-name">手机号码</div>
-                    <input type="text" placeholder="请输入账号" v-model="mobile" />
+                    <input type="text" @focus="mobileActive = false"   placeholder="请输入账号" v-model="mobile" />
+                    <div class="tips" v-if="mobileActive">
+                        手机号码格式不正确
+                    </div>
                 </div>
                 <div class="form-item form-item-input">
                     <div class="label-name">验证码</div>
                     <input type="text" class="mobilecode" placeholder="请输入验证码" v-model="mobileCode" />
-                    <el-button @click="getMobileCode" class="mobilecode-btn">获取验证码</el-button>
+                    <el-button @click="getMobileCode" :disabled="codeActive"  class="mobilecode-btn"  :class="codeActive?'codeActive':''">获取验证码<span v-if="seconds"><br>（{{seconds}}s）</span></el-button>
                 </div>
                
                 <div class="form-item" style="margin-top:38px;">
@@ -28,22 +31,86 @@
 </template>
 
 <script>
+import {getSms} from '@/api/api'
 export default {
     data(){
         return{
             mobile:'',
-            mobileCode:''
+            mobileCode:'',
+            mobileActive:false,
+            codeActive:false,
+            seconds:0,
         }
     },
     methods:{
         getMobileCode(){
+            let mobilePhone = this.mobile;
+            let auto_id = 10;
+            let status = 1;
+            let result = this.testFormat('mobileNum',mobilePhone);
+            if(result&&mobilePhone){
+                let data ={
+                    "mobilePhone":mobilePhone,
+                    "auto_id":auto_id,
+                    "status":status
+                }
+                getSms(data).then(res=>{
+                    if(res.success){
+                        this.seconds = 30;
+                        this.codeActive = true
+                        let timer = setInterval(()=>{
+                            if(this.seconds>0){
 
+                                this.seconds -=1;
+                            }else{
+                                if(timer){
+                                    clearInterval(timer)
+                                }
+                                this.seconds = 0;
+                                this.codeActive = false;
+                            }
+                        },1000)
+                        this.$message("已发送验证码")
+
+                    }else{
+                        let message = res.message
+                        this.$message({
+                            type:"warning",
+                            showClose:true,
+                            message:message
+                        });
+                    }
+                    
+                }).catch(()=>{
+                    this.$message("获取验证码失败")
+                })
+            }
+            if(!result){
+                this.mobileActive = true;
+                return
+            }
+
+            
+        },
+        testFormat(type,str){
+            let pattern = /[0-9|a-z|A-Z]{6,12}/;
+            let patternMap = {
+                'password':/^[0-9|a-z|A-Z]{6,12}$/,
+                'mobileNum':/^1[0-9]{10}$/,
+            }
+            return patternMap[type].test(str);
         },
         goBack(){
+
             this.$router.replace('/')
         },
         goNext(){
-            this.$router.replace('/login/modifypass')
+            if(this.mobile&&this.mobileCode){
+                this.$router.replace('/login/modifypass');
+                localStorage.setItem('mobile',this.mobile)
+                localStorage.setItem('mobileCode',this.mobileCode)
+            }
+            
         }
     }
 }
@@ -93,6 +160,12 @@ export default {
 
                 
             }
+            .tips{
+                position:absolute;
+                color:red;
+                left:76px;
+                top:0;
+            }
 
             .label-name{
                 width:68px;
@@ -111,6 +184,10 @@ export default {
                 background-color: #FF4D05;
                 color:#fff;
                 border:none;
+            }
+            .codeActive{
+                background-color: #666;
+                color:#fff;
             }
             .btn,.btn-nobg{
                 width:100%;
