@@ -30,7 +30,9 @@
                 <el-upload
                     class="avatar-uploader"
                     action="https://jsonplaceholder.typicode.com/posts/"
+                    
                     :show-file-list="false"
+                    :multiple="true"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -55,6 +57,7 @@ export default {
             title:'',
             content:'',
             imageUrl:'',
+            files:[]
 
         }
 
@@ -63,18 +66,52 @@ export default {
         handleAvatarSuccess(){
 
         },
-        beforeAvatarUpload(){
+        beforeAvatarUpload(file){
+            let isPic = file.type =="image/jpeg"||file.type=="image/png"
+            // console.log(file.type)
+            if(file&&isPic){
+                this.files.push(file)
+            }
+            return false;
+        },
+        upload(){
+            
+            let companyName = this.companyName;
+            let userName = this.userName;
+            if(!companyName||!userName){return}
+            let mobile = this.mobile;
+            let title = this.title;
+            let content = this.content;
+            let files = this.files;
+            let data = new FormData();
+            data.append('company',companyName);
+            data.append('user',userName);
+            data.append('mobilePhone',mobile);
+            data.append('title',title);
+            data.append('content',content);
+            if(files&&files.length>0){
 
+                for(let i=0;i<files.length;i++){
+                    data.append('files',files[i]);
+    
+                }
+            }else{
+                data.append('files',null)
+            }
+            //upload(data).then(res=>{}).catch(()=>{})
+            // reset every variables
+             
         },
         mycomplains(){
             this.$router.replace('/complain/mycomplains')
         }
-    }
+    },
+    
     
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     .com-body-header{
         position: relative;
         width: 100%;
@@ -132,7 +169,7 @@ export default {
                 width:280px;
                 line-height:30px;
                 width:500px;
-                color:#DEDEDE;
+                // color:#DEDEDE;
             }
             textarea{
                 width: 500px;
@@ -163,7 +200,7 @@ export default {
                 
         }
         
-    }
+}
 
 .avatar-uploader{
     width:500px;
