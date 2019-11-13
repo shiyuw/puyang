@@ -40,20 +40,17 @@ export default {
 }
 </script>
 <style lang="less">
-#app::-webkit-scrollbar {
-        display: none;
-}
 .el-main {
     font-family:'Microsoft YaHei';
     background: url('../../assets/images/bg.png') no-repeat center center;
     background-size: cover;
     // overflow: hidden;
-    height:900px;
+    height:1060px;
+    overflow-x: hidden;
+
     
     width:100%;
-    // opacity: 0.5;
-    // padding:1px;
-    // box-sizing:border-box;
+   
     z-index:1;
     position: relative;
     &:before{
@@ -77,7 +74,7 @@ export default {
         .usernav{
             position: absolute;
             top:-22px;
-            right:-302px;
+            right:-500px;
             line-height: 35px;
             color:#1A1A1A;
             div{
