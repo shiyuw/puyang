@@ -204,7 +204,7 @@ export default {
                 height:38px;
                 width:280px;
                 line-height:30px;
-                color:rgba(179,179,179,1)
+                // color:rgba(179,179,179,1)
 
                 
             }
