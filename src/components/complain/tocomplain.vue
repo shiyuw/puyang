@@ -40,7 +40,7 @@
                 </el-upload>
             </div>
             <div class="form-item">
-                <el-button>提交</el-button>
+                <el-button @click="submitComplain">提交</el-button>
             </div>
         </div>
     </div>
@@ -48,9 +48,11 @@
 </template>
 
 <script>
+import {addComplaint} from '@/api/api'
 export default {
     data(){
         return{
+            userId:null,
             companyName:'',
             userName:'',
             mobile:'',
@@ -68,44 +70,87 @@ export default {
         },
         beforeAvatarUpload(file){
             let isPic = file.type =="image/jpeg"||file.type=="image/png"
-            // console.log(file.type)
+            
             if(file&&isPic){
                 this.files.push(file)
             }
             return false;
         },
-        upload(){
-            
+        submitComplain(){
+            let userId = this.userId;
             let companyName = this.companyName;
             let userName = this.userName;
             if(!companyName||!userName){return}
             let mobile = this.mobile;
             let title = this.title;
             let content = this.content;
-            let files = this.files;
-            let data = new FormData();
-            data.append('company',companyName);
-            data.append('user',userName);
-            data.append('mobilePhone',mobile);
-            data.append('title',title);
-            data.append('content',content);
-            if(files&&files.length>0){
+            let data = {
+                userId:userId,
+                title:title,
+                content:content,
+                companyName:companyName,
+                city:'',
+                userName:userName,
+                province:'',
+                phone:mobile,
+                pictureUrl:'',
+                videoUrl:'',
+                appInfoId:10,
 
-                for(let i=0;i<files.length;i++){
-                    data.append('files',files[i]);
-    
-                }
-            }else{
-                data.append('files',null)
             }
+
+            // let files = this.files;
+            
+            // let data = new FormData();
+            // data.append('companyName',companyName);
+            // data.append('userName',userName);
+            // data.append('phone',mobile);
+            // data.append('title',title);
+            // data.append('content',content);
+            // if(files&&files.length>0){
+
+            //     for(let i=0;i<files.length;i++){
+            //         data.append('files',files[i]);
+    
+            //     }
+            // }else{
+            //     data.append('files',null)
+            // }
             //upload(data).then(res=>{}).catch(()=>{})
             // reset every variables
-             
+             addComplaint(data).then(res=>{
+                 if(res.success){
+                     this.$message({
+                         type:'success',
+                         message:'投诉成功',
+                         showClose:true
+                     });
+                 }else{
+                     let message = res.message;
+                     this.$message({
+                         type:'warning',
+                         message:message,
+                         showClose:true
+                     })
+                 }
+             }).catch(()=>{
+                 this.$message({
+                     type:'warning',
+                     message:'投诉失败，请重试',
+                     showClose:true
+                 });
+             });
         },
         mycomplains(){
             this.$router.replace('/complain/mycomplains')
         }
     },
+    mounted(){
+        let userId = localStorage.getItem('userId');
+        if(userId){
+            this.userId = userId
+        }
+    }
     
     
 }

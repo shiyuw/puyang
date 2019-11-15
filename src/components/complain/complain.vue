@@ -25,21 +25,28 @@
 export default {
     data(){
         return{
-           username:'135XXXX'
+           username:'匿名用户'
         }
 
     
     },
     methods:{
         signout(){
+            sessionStorage.clear();
             this.$router.replace('/')
         }
 
         
+    },
+    mounted(){
+        let user = sessionStorage.getItem('user');
+        if(user){
+            this.username = user;
+        }
     }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .el-main {
     font-family:'Microsoft YaHei';
     background: url('../../assets/images/bg.png') no-repeat center center;

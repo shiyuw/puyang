@@ -17,23 +17,23 @@
             :index="indexMethod">
             </el-table-column>
             <el-table-column
-            prop="date"
+            prop="complaintsTime"
             align="center"
             label="日期"
             width="267">
             </el-table-column>
             <el-table-column
-            prop="address"
+            prop="title"
             align="center"
             label="标题">
             </el-table-column>
             <el-table-column
-            prop="state"
+            prop="replyStatus"
             width="190"
             align="center"
             label="状态">
                 <template slot-scope="scope">
-                    <span :class="scope.row.state=='未回复'?'notActive':'active'" @click="checkResult(scope.row)">{{scope.row.state}}</span>
+                    <span :class="scope.row.replyStatus==0?'notActive':'active'" @click="checkResult(scope.row)">{{scope.row.replyStatus?'已回复':'未回复'}}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -54,12 +54,14 @@
 </template>
 
 <script>
+import {selectInfo} from '@/api/api'
 export default {
     data(){
         return{
-            tableData:[{
-                date: '2016-05-02',
-                name: '王小虎',
+            tableData:[
+                {
+                complaintsTime: '2016-05-02',
+                title: '王小虎',
                 province: '上海',
                 city: '普陀区',
                 address: '上海市普陀区金沙江路 1518 弄',
@@ -67,8 +69,8 @@ export default {
                 tag: '家',
                 state:'未回复'
                 }, {
-                date: '2016-05-04',
-                name: '王小虎',
+                complaintsTime: '2016-05-04',
+                title: '王小虎',
                 province: '上海',
                 city: '普陀区',
                 address: '上海市普陀区金沙江路 1517 弄',
@@ -76,8 +78,8 @@ export default {
                 tag: '公司',
                 state:'未回复'
                 }, {
-                date: '2016-05-01',
-                name: '王小虎',
+                complaintsTime: '2016-05-01',
+                title: '王小虎',
                 province: '上海',
                 city: '普陀区',
                 address: '上海市普陀区金沙江路 1519 弄',
@@ -85,19 +87,21 @@ export default {
                 tag: '家',
                 state:'未回复'
                 }, {
-                date: '2016-05-03',
-                name: '王小虎',
+                complaintsTime: '2016-05-03',
+                title: '王小虎',
                 province: '上海',
                 city: '普陀区',
                 address: '上海市普陀区金沙江路 1516 弄',
                 zip: 200333,
                 tag: '公司',
                 state:'已回复'
-            }],
+            }
+            ],
             goPageNum:1,
             totalItems:24,
             totalPages:2,
             curPageNum:1,
+            userId:null,
         }
 
     },
@@ -110,6 +114,8 @@ export default {
         },
         checkResult(row){
             // console.log(row)
+            let dataStr = JSON.stringify(row);
+            sessionStorage.setItem('content',dataStr);
             this.$router.replace('/complain/detail');
         },
         goPage(current,num){
@@ -127,8 +133,50 @@ export default {
 
             
         },
+        loadContent(pagenum){
+            let pageNo = pagenum;
+            let pageSize = 10;
+            let userId = this.userId;
+            let data ={
+                "pageNo":pageNo,
+                "pageSize":pageSize,
+                "userId":userId
+                
+            }
+            selectInfo(data).then(res=>{
+                if(res.success){
+                    this.tableData = res.data
+                }else{
+                    let message = res.message;
+                    this.$message({
+                        type:'warning',
+                        message:message,
+                        showClose:true
+                    });
+                }
+            }).catch(()=>{
+                this.$message({
+                    type:'warning',
+                    message:"获取数据失败",
+                    showClose:true
+                });
+            })
+        }
         
-    }
+        
+    },//methods结束
+    mounted(){
+            let userId = sessionStorage.getItem('userId');
+            if(userId){
+                this.userId = userId;
+            }
+            this.loadContent(this.curPageNum);
+        },
+        watch:{
+            curPageNum(val){
+                this.loadContent(val);
+            }
+        }
 }
 </script>
 
@@ -179,7 +227,7 @@ export default {
             display: inline-block;
             margin-left:10px;
             font-size:12px;
-            padding:10px 14px 9px 14px;
+            padding:9px 14px 9px 12px;
             span{
                 color:#4D4D4D;
             }
