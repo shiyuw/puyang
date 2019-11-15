@@ -42,7 +42,9 @@
 </template>
 <script>
 import {register,getSms} from "@/api/api"
+import {testFormat} from '@/mixin/testFormat'
 export default {
+    mixins:[testFormat],
     data(){
         return{
             companyName:'',
@@ -50,12 +52,8 @@ export default {
             mobileCode:'',
             password:'',
             contract:false,
-            // mobileFormatActive:false,
-            // disableActive:false
-            codeActive:false,
-            seconds:0,
-            pwdActive: false,
-            mobileActive:false
+           
+            
         }
     },
     methods:{
@@ -108,14 +106,7 @@ export default {
                 this.$message("注册失败")
             })
         },
-        testFormat(type,str){
-            let pattern = /[0-9|a-z|A-Z]{6,12}/;
-            let patternMap = {
-                'password':/^[0-9|a-z|A-Z]{6,12}$/,
-                'mobileNum':/^1[0-9]{10}$/,
-            }
-            return patternMap[type].test(str);
-        },
+        
         goBack(){
             this.$router.replace('/')
         },

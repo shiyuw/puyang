@@ -31,20 +31,20 @@
 
 <script>
 import {updatePassword} from "@/api/api"
+import {testFormat} from '@/mixin/testFormat'
 export default {
     data(){
         return{
             password:'',
             password2:'',
 
-            warnActive: false,
-            pwdActive: false
+            
         }
     },
     methods:{
         
         confirm(){
-            let result = this.testFormat(this.password);
+            let result = this.testFormat("password",this.password);
             if(!result){
                 this.pwdActive = true;
                 return;
@@ -75,12 +75,7 @@ export default {
             
             
         },
-        testFormat(str){
-            // 'password':/^[0-9|a-z|A-Z]{6,12}$/,
-            //    'mobileNum':/^1[0-9]{10}$/,
-            let pattern = /^[0-9|a-z|A-Z]{6,12}$/;
-            return pattern.test(str);
-        },
+        
         goBack(){
             this.$router.replace('/')
         }
