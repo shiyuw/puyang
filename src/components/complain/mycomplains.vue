@@ -72,6 +72,7 @@ export default {
             return (index +1);
         },
         tocomplain(){
+            sessionStorage.removeItem('currentPage');
             this.$router.replace('/complain/')
         },
         checkResult(row){
