@@ -115,6 +115,7 @@ export default {
         checkResult(row){
             // console.log(row)
             let dataStr = JSON.stringify(row);
+            sessionStorage.setItem('currentPage',this.curPageNum);
             sessionStorage.setItem('content',dataStr);
             this.$router.replace('/complain/detail');
         },
@@ -166,11 +167,18 @@ export default {
         
     },//methods结束
     mounted(){
-            let userId = sessionStorage.getItem('userId');
-            if(userId){
-                this.userId = userId;
+            // 再详情页退回时保证退回到之前访问的页面
+            let curPageNum = sessionStorage.getItem('currentPage');
+            if(curPageNum){
+                this.curPageNum = parseInt(curPageNum);
+            }else{
+                let userId = sessionStorage.getItem('userId');
+                if(userId){
+                    this.userId = userId;
+                }
+                this.loadContent(this.curPageNum);
             }
-            this.loadContent(this.curPageNum);
+            
         },
         watch:{
             curPageNum(val){
