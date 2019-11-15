@@ -132,9 +132,11 @@ export default {
     mounted(){
             // 再详情页退回时保证退回到之前访问的页面
             let curPageNum = sessionStorage.getItem('currentPage');
-            if(curPageNum){
+            
+            if(curPageNum&&(this.curPageNum!=parseInt(curPageNum))){
                 this.curPageNum = parseInt(curPageNum);
             }else{
+                
                 let userId = sessionStorage.getItem('userId');
                 if(userId){
                     this.userId = userId;
