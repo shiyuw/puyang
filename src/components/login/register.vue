@@ -113,7 +113,7 @@ export default {
         getMobileCode(){
             let mobilePhone = this.mobile;
             let auto_id = 10;
-            let status = 1;
+            let status = 2; // 新用户注册
             
             let result = this.testFormat('mobileNum',mobilePhone);
             if(result&&mobilePhone){

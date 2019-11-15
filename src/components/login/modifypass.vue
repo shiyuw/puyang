@@ -33,6 +33,7 @@
 import {updatePassword} from "@/api/api"
 import {testFormat} from '@/mixin/testFormat'
 export default {
+    mixins:[testFormat],
     data(){
         return{
             password:'',
@@ -59,15 +60,30 @@ export default {
             let appInfoId = 10;
             if(password&&mobilecode&&mobile){
                 let data = {
-                    "mobilePhone":mobile,
+                    "mobile":mobile,
                     "captcha":mobilecode,
                     "password":password,
                     "appInfoId":appInfoId
 
                 }
                 updatePassword(data).then(res=>{
-                    this.$message("修改密码成功")
-                    this.$router.replace('/login/success')
+                    
+                    if(res.success){
+                        this.$message({
+                            type:'success',
+                            message:"修改密码成功",
+                            showClose:true
+                            
+                            });
+                        this.$router.replace('/login/success')
+                    }else{
+                        let message = res.message;
+                        this.$message({
+                            type:'warning',
+                            message:message,
+                            showClose:true
+                        })
+                    }
                 }).catch(()=>{
                     this.$message("修改密码失败")
                 })

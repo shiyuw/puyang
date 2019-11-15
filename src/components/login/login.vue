@@ -42,11 +42,41 @@ export default {
             let username = this.username;
             let password = this.password;
             let appInfoId = 10;
+            // for(let i = 0;i<20;i++){
+            //     appInfoId = String(i);
+            //     let data = {
+            //         'mobile':username,
+            //         'password':password,
+            //         'appInfoId':appInfoId
+            //     }
+            //     login(data).then(res=>{
+            //         // this.$message("登录成功")
+            //         if(res.sucess){
+            //             this.$message({
+            //                 type:'success',
+            //                 showClose:true,
+            //                 message:"登录成功"
+            //             });
+            //             this.$router.replace('/complain')
+            //         }else{
+            //             let message = res.message;
+            //             this.$message({
+            //                 type:'warning',
+            //                 showClose:true,
+            //                 message:message
+            //             });
+            //         }
+                    
+            //     }).catch(()=>{
+            //         this.$message("登录失败")
+            //     })
+            // }//for 结束
             let data = {
                 'mobile':username,
                 'password':password,
                 'appInfoId':appInfoId
             }
+            
             login(data).then(res=>{
                 // this.$message("登录成功")
                 if(res.sucess){
@@ -55,7 +85,11 @@ export default {
                         showClose:true,
                         message:"登录成功"
                     });
-                    this.$router.replace('/complain')
+                    // let user = res.data.user;
+                    // let userId = res.data.userId;
+                    // sessionStorage.setItem('user',user);
+                    // sessionStorage.setItem('userId',userId);
+                    this.$router.replace('/intro')
                 }else{
                     let message = res.message;
                     this.$message({
