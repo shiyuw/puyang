@@ -2,7 +2,7 @@
     <el-container>
         
         <el-main>
-            <img width="1393" src="@/assets/images/bg.png" alt="背景图">
+            <!-- <img width="1393" src="@/assets/images/bg.png" alt="背景图"> -->
         </el-main>
         <el-aside width="510px">
             <div class="aside-wrapper">
@@ -38,9 +38,19 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .el-container{
+        height:1080px;
+    }
     .el-main{
         padding:0;
         width:1400px !important;
+        background: url('../../assets/images/bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        // height:100%;
+    }
+    .el-aside{
+        height:100%;
     }
     .aside-wrapper{
         margin:0 auto;

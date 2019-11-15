@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="com-body-header">
+        <div class="com-body-header1">
             <el-button style="background:rgba(63,162,255,1);" @click="tocomplain">我要投诉</el-button>
             <el-button style="background:rgba(255,77,5,1); margin-left:80px;">我的投诉</el-button>
 
@@ -33,10 +33,7 @@
             align="center"
             label="状态">
                 <template slot-scope="scope">
-                    <!-- <el-tag
-                    :type="scope.row.tag === '家' ? 'primary' : 'success'"
-                    disable-transitions>{{scope.row.tag}}</el-tag> -->
-                    <span :class="scope.row.state=='未回复'?'notActive':'active'">{{scope.row.state}}</span>
+                    <span :class="scope.row.state=='未回复'?'notActive':'active'" @click="checkResult(scope.row)">{{scope.row.state}}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -111,6 +108,10 @@ export default {
         tocomplain(){
             this.$router.replace('/complain/')
         },
+        checkResult(row){
+            // console.log(row)
+            this.$router.replace('/complain/detail');
+        },
         goPage(current,num){
 
             if(arguments.length>1){
@@ -132,7 +133,7 @@ export default {
 </script>
 
 <style lang="less">
-    .com-body-header{
+    .com-body-header1{
         position: relative;
         width: 100%;
         height: 114px;
