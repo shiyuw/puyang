@@ -58,45 +58,7 @@ import {selectInfo} from '@/api/api'
 export default {
     data(){
         return{
-            tableData:[
-                {
-                complaintsTime: '2016-05-02',
-                title: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333,
-                tag: '家',
-                state:'未回复'
-                }, {
-                complaintsTime: '2016-05-04',
-                title: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1517 弄',
-                zip: 200333,
-                tag: '公司',
-                state:'未回复'
-                }, {
-                complaintsTime: '2016-05-01',
-                title: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1519 弄',
-                zip: 200333,
-                tag: '家',
-                state:'未回复'
-                }, {
-                complaintsTime: '2016-05-03',
-                title: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1516 弄',
-                zip: 200333,
-                tag: '公司',
-                state:'已回复'
-            }
-            ],
+            tableData:[],
             goPageNum:1,
             totalItems:24,
             totalPages:2,
