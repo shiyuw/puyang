@@ -52,11 +52,11 @@ export default {
     background: url('../../assets/images/bg.png') no-repeat center center;
     background-size: cover;
     // overflow: hidden;
-    height:1060px;
+    height:100vh;
     overflow-x: hidden;
 
     
-    width:100%;
+    width:100vw;
    
     z-index:1;
     position: relative;
@@ -73,16 +73,18 @@ export default {
     }
     .complain-wrapper{
         position: absolute;
-        width:1200px;
-        top:43px;
-        left:360px;
+        width:62.5%;
+        top:3.58%;
+        left:18.75%;
         opacity: 1;
         z-index: 11;
         .usernav{
             position: absolute;
-            top:-22px;
-            right:-500px;
+            top:0;
+            // right:-500px;
+            left:106%;
             line-height: 35px;
+            width:246px;
             color:#1A1A1A;
             div{
                 display: inline-block;
@@ -102,6 +104,7 @@ export default {
             }
             .user-signout{
                 margin-left:56px;
+                display: inline-block;
                 img{
                     margin:5px auto;
                     cursor: pointer;
